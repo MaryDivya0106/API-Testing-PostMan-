@@ -1,0 +1,694 @@
+{
+	"info": {
+		"_postman_id": "e9c140b7-e4bd-49d9-a772-f0c88cd7eb91",
+		"name": "Reqrest",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GET REQUEST",
+			"item": [
+				{
+					"name": "GET Request",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "8e52c380-8435-4905-9753-1623ef44ff76",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"//Comparing body contain email.",
+									"pm.test(\"Body matches string email\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"eve.holt@reqres.in\");",
+									"});",
+									"",
+									"//Comparing data with last_Name",
+									"pm.test(\"Body matches string Holt\", function () {",
+									"  pm.expect(pm.response.json().data[0].last_name).to.include(\"Holt\");",
+									"});",
+									"",
+									"//Checking number of pages",
+									"pm.test(\"pages is equal to 2\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.page).to.eql(2);",
+									"});",
+									"",
+									"//Checking Response time lesser than 200ms",
+									"pm.test(\"Response time is less than 200ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);",
+									"});",
+									"",
+									"console.log(pm.environment.get(\"req_base_url\"));",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{req_base_url}}{{users}}?page=2",
+							"host": [
+								"{{req_base_url}}{{users}}"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Single User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ebd7af8a-faab-41c8-a640-0948d74e5870",
+								"exec": [
+									"pm.globals.set(\"users\", \"/api/users\");",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Body matches string\", function () {",
+									"    pm.expect(pm.response.json().data.email).to.include(\"janet.weaver@reqres.in\");",
+									"",
+									"pm.test(\"Your test name\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.data.id).to.eql(2);",
+									"});",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{req_base_url}}{{users}}/2",
+							"host": [
+								"{{req_base_url}}{{users}}"
+							],
+							"path": [
+								"2"
+							]
+						},
+						"description": "Gets only single user"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Single User Not Found",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "d8caf2fd-20ec-4467-b380-3d1ed2fc8744",
+								"exec": [
+									"// Checking Status code is equal to response status code 404",
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});",
+									"",
+									"//"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{req_base_url}}{{users}}/23",
+							"host": [
+								"{{req_base_url}}{{users}}"
+							],
+							"path": [
+								"23"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List  <Resources>",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "81c30a7c-8fc3-4ef1-9415-1bc5b6787513",
+								"exec": [
+									"//validating Status Code=200",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"//Validating Status rsponse less than 200ms",
+									"pm.test(\"Response time is less than 200ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"",
+									" ",
+									"    ",
+									"      // Validating data[0] contain id,name",
+									"pm.test(\"Response per_page value is equal to 3\", function(){",
+									"    if( pm.expect(pm.response.json().data[0].id).to.eql(1))",
+									"    {",
+									"         pm.expect(pm.response.json().data[0].name).to.include(\"cerulean\")",
+									"     }",
+									"   ",
+									"});  ",
+									"        ",
+									"    ",
+									"",
+									"",
+									"",
+									"",
+									"",
+									"",
+									"",
+									"",
+									"",
+									"",
+									"",
+									"",
+									"",
+									"",
+									"",
+									"",
+									"",
+									"",
+									"",
+									"",
+									"",
+									"",
+									"",
+									"",
+									"",
+									"",
+									"//Validating json response contain page value same",
+									"pm.test(\"Your test name\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.page).to.eql(1);",
+									"});",
+									"//Validating json response contain per_page value ",
+									"pm.test(\"Response per_page value is equal to 3\", function(){",
+									"    pm.expect(pm.response.json().per_page).to.eql(3)",
+									"})",
+									"// Validating data[0] contain id,name",
+									"pm.test(\"Response per_page value is equal to 3\", function(){",
+									"    pm.expect(pm.response.json().data[0].id).to.eql(1)",
+									"    pm.expect(pm.response.json().data[0].name).to.include(\"cerulean\")",
+									"});",
+									"// Validating data[0] contain id,name",
+									"pm.test(\"Response per_page value is equal to 3\", function(){",
+									"    pm.expect(pm.response.json().data[0].id).to.eql(1)",
+									"    pm.expect(pm.response.json().data[0].name).to.include(\"cerulean\")",
+									"});",
+									"",
+									"",
+									"//Checking header content type is same as response",
+									"pm.test(\"Content-Type is present\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{req_base_url}}/api/unknown?page=1",
+							"host": [
+								"{{req_base_url}}"
+							],
+							"path": [
+								"api",
+								"unknown"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get single<Resource>",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c8ef234b-31a4-4935-9ab5-28acc7b1bbc8",
+								"exec": [
+									"//Checking statsu code as 404",
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});",
+									"",
+									"//Checking response time less than 700;",
+									"pm.test(\"Response time is less than 700\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(700);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{req_base_url}}{{users}}/20",
+							"host": [
+								"{{req_base_url}}{{users}}"
+							],
+							"path": [
+								"20"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "POST REQUEST",
+			"item": [
+				{
+					"name": "Create user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "4f5e0d2e-2343-4f5c-84df-876fe29a43bb",
+								"exec": [
+									"//Checking status code is 201 ",
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"//Checking name in response",
+									"pm.test(\"Body matches string\", function () {",
+									"    pm.expect(pm.response.json().name).to.include(\"morpheus\");",
+									"});",
+									"",
+									"//Checking response contain leader",
+									"pm.test(\"Body contain leader\", function(){",
+									"    pm.expect(pm.response.json().job).to.include(\"leader\");",
+									"    });",
+									"    ",
+									"//Checking id is 350 changing for every refresh ",
+									"pm.test(\"Your test name\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.id).to.eql(350);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"morpheus\",\r\n    \"job\": \"leader\"\r\n}"
+						},
+						"url": {
+							"raw": "{{req_base_url}}/api/users/2",
+							"host": [
+								"{{req_base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c85f32a9-6018-4081-ae57-4525eada30ca",
+								"exec": [
+									"//Checking Status code",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"//Checking Response contain id=4",
+									"pm.test(\"Id should equal to 4\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.id).to.eql(4);",
+									"});",
+									"",
+									"pm.globals.set(\"Register_user\", \"/api/register\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"eve.holt@reqres.in\",\r\n    \"password\": \"pistol\"\r\n}"
+						},
+						"url": {
+							"raw": "{{req_base_url}}{{Register_user}}",
+							"host": [
+								"{{req_base_url}}{{Register_user}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Registure Un successful",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f62f002d-b230-4760-b620-a17ccdbd801c",
+								"exec": [
+									"//Checking status Code 400 bad request",
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"//Checking Response body contains Missing password",
+									"pm.test(\"Body matches string\", function () {",
+									"    pm.expect(pm.response.json().error).to.include(\"Missing password\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"sydney@fife\"\r\n}"
+						},
+						"url": {
+							"raw": "{{req_base_url}}{{Register_user}}",
+							"host": [
+								"{{req_base_url}}{{Register_user}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login Success",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a0714f76-454f-4afa-b94e-f5ebda3a0580",
+								"exec": [
+									"//set Global variable",
+									"pm.globals.set(\"Login_user\", \"/api/login\");",
+									"//Checking Status code is equal to 200",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"//Checking response contains token",
+									"pm.test(\"Body matches string\", function () {",
+									"    pm.expect(pm.response.json().token).to.include(\"QpwL5tke4Pnpja7X4\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"eve.holt@reqres.in\",\r\n    \"password\": \"cityslicka\"\r\n}"
+						},
+						"url": {
+							"raw": "{{req_base_url}}{{Login_user}}",
+							"host": [
+								"{{req_base_url}}{{Login_user}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login UnSuccessful",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "6abda20f-ac1d-488d-aadf-920776cc2f53",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"//Checking response contain missing password",
+									"pm.test(\"Body matches string\", function () {",
+									"    pm.expect(pm.response.json().error).to.include(\"Missing password\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"peter@klaven\"\r\n}"
+						},
+						"url": {
+							"raw": "{{req_base_url}}{{Login_user}}",
+							"host": [
+								"{{req_base_url}}{{Login_user}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Request Delay",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{req_base_url}}/api/users?delay=3\n\n",
+							"host": [
+								"{{req_base_url}}"
+							],
+							"path": [
+								"api",
+								"users"
+							],
+							"query": [
+								{
+									"key": "delay",
+									"value": "3\n\n"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "PUT REQUEST",
+			"item": [
+				{
+					"name": "Update",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c9d8ed82-cbc7-4a7f-9fe0-4404b3aa2197",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Body matches string\", function () {",
+									"    pm.expect(pm.response.json().name).to.include(\"DivyaReddy\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"DivyaReddy\",\r\n    \"job\": \"zion resident\"\r\n}\r\n"
+						},
+						"url": {
+							"raw": "{{req_base_url}}/api/register",
+							"host": [
+								"{{req_base_url}}"
+							],
+							"path": [
+								"api",
+								"register"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "DELETE REQUEST",
+			"item": [
+				{
+					"name": "Delete User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b6ec1f7e-1d28-4d59-850d-923bd343776d",
+								"exec": [
+									"pm.test(\"Status code is 204\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{req_base_url}}/api/users/2",
+							"host": [
+								"{{req_base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Checking Pet is Available after delete",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{req_base_url}}/api/users/2",
+							"host": [
+								"{{req_base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

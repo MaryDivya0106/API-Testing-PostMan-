@@ -1,0 +1,159 @@
+{
+	"info": {
+		"_postman_id": "665116cb-c86d-4307-a7f8-fd924e52fec7",
+		"name": "FirstPostMan ",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GroupktISO2",
+			"item": [
+				{
+					"name": "valid country code IN check ",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f0e8b2a5-5d2a-4b25-8fec-6f0cd46e4405",
+								"exec": [
+									"pm.test(\"Response time is less than 200ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(947);",
+									"});",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Body matches country name string\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"India\");",
+									"});",
+									"",
+									"",
+									"pm.test(\"check alpha2 as IN\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.RestResponse.result.alpha2_code).to.eql(\"IN\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}IN",
+							"host": [
+								"{{url}}IN"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid ISO code check with Alphanumeric value",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "5363deb5-6f53-4e2b-9664-06adc7e6a2c6",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Body matches string\", function () {",
+									"    pm.expect(pm.response.json().RestResponse.messages).to.include(\"No matching country found for requested code [I4].\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}I4",
+							"host": [
+								"{{url}}I4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid ISO code check with null values",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "5363deb5-6f53-4e2b-9664-06adc7e6a2c6",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}",
+							"host": [
+								"{{url}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid ISO code check with smallcase letters",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "5363deb5-6f53-4e2b-9664-06adc7e6a2c6",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Body is correct\", function () {",
+									"    pm.response.RestResponse.messages.to.have.body( \"No matching country found for requested code [in].\");",
+									"});",
+									"pm.test(\"Body matches string\", function () {",
+									"    pm.expect(pm.response.text()).to.include( \"No matching country found for requested code [in].\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}in",
+							"host": [
+								"{{url}}in"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

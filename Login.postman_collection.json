@@ -1,0 +1,72 @@
+{
+	"info": {
+		"_postman_id": "d5b16e30-428d-4941-986a-af0423ee2243",
+		"name": "Login",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "get skillspage",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://www.skillswap.pro/",
+					"protocol": "http",
+					"host": [
+						"www",
+						"skillswap",
+						"pro"
+					],
+					"path": [
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "post credentials",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"rememberMe\":false,\r\n\"email\":\"divya.pentareddy@gmail.com\",\r\n\"password\":\"Divyareddy0106\"}"
+				},
+				"url": {
+					"raw": "http://www.skillswap.pro/Account",
+					"protocol": "http",
+					"host": [
+						"www",
+						"skillswap",
+						"pro"
+					],
+					"path": [
+						"Account"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -1,0 +1,984 @@
+{
+	"info": {
+		"_postman_id": "4ffed499-92f3-489c-9151-b7133e0e42ba",
+		"name": "petstore",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "PET",
+			"item": [
+				{
+					"name": "Post",
+					"item": [
+						{
+							"name": "Add a new pet to the store Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "35468353-6333-4d74-86c5-ed7fbf649f89",
+										"exec": [
+											"",
+											"console.log(pm.environment.get(\"base_url\"));",
+											"console.log(pm.globals.set(\"id\", \"123\"));",
+											"console.log(pm.globals.set(\"Pet_Name\", \"dog\"));",
+											"",
+											"//Checking Success status code 200",
+											"pm.test(\"Status code is success 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"// checking petname is equal to global Pet_Name",
+											"pm.test(\"Body matches string\", function () {",
+											"    var jsonResponse = xml2Json(responseBody);",
+											"    pm.expect(jsonResponse.Pet.name).to.include(pm.globals.get(\"Pet_Name\"));",
+											"});",
+											"//checking status message  as availabe",
+											"    var jsonResponse = xml2Json(responseBody);",
+											"pm.test(\"Status code name has string\", function () {",
+											"   pm.expect(jsonResponse.Pet.status).to.eql(\"available\");",
+											"});",
+											"// category id check",
+											"pm.test(\"Your test name\", function () {",
+											"       pm.expect(jsonResponse.Pet.category.id).to.eql(\"234\");",
+											"});",
+											"",
+											"",
+											"//checking id for tags and store in variable and use for get request",
+											"pm.test(\"Body matches string\", function () {",
+											"     var jsonResponse = xml2Json(responseBody);",
+											"   pm.expect(jsonResponse.Pet.tags.tag.id).to.include(\"456\");",
+											"    ",
+											"});",
+											"pm.environment.set(\"temp_var\",jsonResponse.Pet.category.idCollection);",
+											"",
+											"console.log(pm.variables.set(\"idCollection\",jsonResponse.Pet.tags.tag.id));",
+											"",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/xml, application/json"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"id\": 123,\r\n  \"category\": {\r\n    \"id\": 234,\r\n    \"name\": \"string\"\r\n  },\r\n  \"name\": \"dog\",\r\n  \"photoUrls\": [\r\n    \"string\"\r\n  ],\r\n  \"tags\": [\r\n    {\r\n      \"id\": 456,\r\n      \"name\": \"string\"\r\n    }\r\n  ],\r\n  \"status\": \"available\"\r\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/pet",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"pet"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Updates a pet in store with form data",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"id\": 111,\r\n  \"category\": {\r\n    \"id\": 234,\r\n    \"name\": \"string\"\r\n  },\r\n  \"name\": \"dog\",\r\n  \"photoUrls\": [\r\n    \"string\"\r\n  ],\r\n  \"tags\": [\r\n    {\r\n      \"id\": 456,\r\n      \"name\": \"string\"\r\n    }\r\n  ],\r\n  \"status\": \"available\"\r\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/pet/{petId}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"pet",
+										"{petId}"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Get",
+					"item": [
+						{
+							"name": "Find pet by id",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "3e6a6d88-914d-4989-b6a3-bbf5d9330b7f",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Your test name\", function () {",
+											"    var jsonObject = xml2Json(responseBody);",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.Pet.id).to.eql(123);",
+											"",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/xml, application/json"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/pet/123",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"pet",
+										"123"
+									]
+								},
+								"description": "Returns a single pet"
+							},
+							"response": []
+						},
+						{
+							"name": "Find Pet by Status",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "366b908e-32c2-4ebd-8f03-0cfd747742a6",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{base_url}}/pet/findByStatus?Status=available",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"pet",
+										"findByStatus"
+									],
+									"query": [
+										{
+											"key": "Status",
+											"value": "available"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Put",
+					"item": [
+						{
+							"name": "Update pet",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "bc0d80a0-7aa8-48bc-9046-f4a7ce84a163",
+										"exec": [
+											"//Validating Status code is 200",
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Validating Updated Id =111\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.id).to.eql(111);",
+											"}); ",
+											"",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"id\": 111,\r\n  \"category\": {\r\n    \"id\": 234,\r\n    \"name\": \"string\"\r\n  },\r\n  \"name\": \"dog\",\r\n  \"photoUrls\": [\r\n    \"string\"\r\n  ],\r\n  \"tags\": [\r\n    {\r\n      \"id\": 456,\r\n      \"name\": \"string\"\r\n    }\r\n  ],\r\n  \"status\": \"available\"\r\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/pet",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"pet"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Delete",
+					"item": [
+						{
+							"name": "Delete Pet by id",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "d1553418-e911-4d3a-816d-b1e8e91016e2",
+										"exec": [
+											"pm.test(\"Pet deleted successfuly\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/pet/111",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"pet",
+										"111"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				}
+			]
+		},
+		{
+			"name": "STORE",
+			"item": [
+				{
+					"name": "GET",
+					"item": [
+						{
+							"name": "Access to pet store",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "b3819171-9b74-40cf-b223-5ccae94dd6ff",
+										"exec": [
+											"//Seeting global variable for 1 which is repeates ",
+											"pm.globals.set(\"StatusQuantity\", \"1\");",
+											"pm.globals.set(\"Quality number\", \"10\");",
+											"pm.globals.set(\"key\", \"Less avaliable than before\");"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "660d7733-2439-4e39-b672-663a629554d8",
+										"exec": [
+											"",
+											"pm.test(\"Checking response contain String is equal to 253\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.string).to.eql(253);",
+											"});",
+											"",
+											"pm.test(\"Checking Response contain available equl to 1\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.avlable).to.eql(1);",
+											"});",
+											"",
+											"pm.test(\"Checking Response contain sucesso\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.Sucesso).to.eql(10);",
+											"    ",
+											"});",
+											"pm.test(\"Respnse contain busy as 3\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.busy).to.eql(3);",
+											"});",
+											"",
+											"pm.test(\"Checking Response contain Hungry as 2\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.Hungry).to.eql(2);",
+											"});",
+											"pm.test(\"Checking response contain sold as 363\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.sold).to.eql(363);",
+											"});",
+											"pm.test(\"Checking Response contain updatedStatus as 1\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.updatedStatus).to.eql(1);",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/store/inventory",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"store",
+										"inventory"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Find Purchase order by id",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "2361d4c7-dc6c-4084-9a1c-bf126e3f7b09",
+										"exec": [
+											"pm.test(\"Checking Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"pm.test(\"Response contain String Status as placed\", function () {",
+											"    pm.expect(pm.response.json().status).to.include(\"placed\");",
+											"});",
+											"pm.test(\"Response contain id as 1\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.petId).to.eql(1);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/store/order/412",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"store",
+										"order",
+										"412"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Post",
+					"item": [
+						{
+							"name": "Place an order for pet",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "6b0534a3-740f-49e0-b8b3-e7d5257386af",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "03560994-3c27-46b9-b4ac-6a785dfd4144",
+										"exec": [
+											"pm.globals.set(\"PetStore_id\", \"412\");",
+											"",
+											"pm.test(\"Checking id is posted as 412\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.id).to.eql(412);",
+											"});",
+											"",
+											"pm.test(\"Checking pet id is stored with 1\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.petId).to.eql(1);",
+											"});",
+											"",
+											"pm.test(\"Checking quantity is equl to 5\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.quantity).to.eql(5);",
+											"});",
+											"",
+											"pm.test(\"Successful POST request\", function () {",
+											"    pm.expect(pm.response.code).to.be.oneOf([200,201]);",
+											"});",
+											"pm.test(\"Checking Status of the pet is placed \", function () {",
+											"    pm.expect(pm.response.json().status).to.include(\"placed\");",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"id\": 412,\r\n  \"petId\": 1,\r\n  \"quantity\": 5,\r\n  \"shipDate\": \"2019-07-07T09:43:00.545Z\",\r\n  \"status\": \"placed\",\r\n  \"complete\": false\r\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/store/order",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"store",
+										"order"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Delete",
+					"item": [
+						{
+							"name": "Delete Purchase order",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "ec9a7e3a-f328-4531-9dba-3c4eaef40869",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/store/order/412",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"store",
+										"order",
+										"412"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				}
+			]
+		},
+		{
+			"name": "USER",
+			"item": [
+				{
+					"name": "POST",
+					"item": [
+						{
+							"name": "Create User",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "b4d1359d-ef6f-4d95-a898-3312df8a3ed0",
+										"exec": [
+											"pm.test(\"Checking user is added by status code\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"pm.test(\"Successful POST request\", function () {",
+											"    pm.expect(pm.response.code).to.be.oneOf([200,201]);",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"id\": 412,\r\n  \"username\": \"MaryDivya\",\r\n  \"firstName\": \"MaryDivya\",\r\n  \"lastName\": \"Beereddy\",\r\n  \"email\": \"divya@gmail.com\",\r\n  \"password\": \"123456\",\r\n  \"phone\": \"123456789\",\r\n  \"userStatus\": 0\r\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/user",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"user"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create List of users with array",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "ea353894-5636-425a-bfe4-968363962fd8",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"pm.test(\"Successful POST request\", function () {",
+											"    pm.expect(pm.response.code).to.be.oneOf([201,200]);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "[\r\n  {\r\n    \"id\": 412,\r\n  \"username\": \"MaryDivya\",\r\n  \"firstName\": \"MaryDivya\",\r\n  \"lastName\": \"Beereddy\",\r\n  \"email\": \"divya@gmail.com\",\r\n  \"password\": \"123456\",\r\n  \"phone\": \"123456789\",\r\n  \"userStatus\": 0\r\n  },\r\n{\r\n  \"id\": 412,\r\n  \"username\": \"Divya\",\r\n  \"firstName\": \"Mary\",\r\n  \"lastName\": \"Beereddy\",\r\n  \"email\": \"divya@gmail.com\",\r\n  \"password\": \"123456\",\r\n  \"phone\": \"123456789\",\r\n  \"userStatus\": 0\r\n  \r\n}\r\n]"
+								},
+								"url": {
+									"raw": "{{base_url}}/user/createWithArray",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"user",
+										"createWithArray"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create with list",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "[\r\n  {\r\n    \"id\": 412,\r\n  \"username\": \"MaryDivya\",\r\n  \"firstName\": \"MaryDivya\",\r\n  \"lastName\": \"Beereddy\",\r\n  \"email\": \"divya@gmail.com\",\r\n  \"password\": \"123456\",\r\n  \"phone\": \"123456789\",\r\n  \"userStatus\": 0\r\n  },\r\n{\r\n  \"id\": 412,\r\n  \"username\": \"Divya\",\r\n  \"firstName\": \"Mary\",\r\n  \"lastName\": \"Beereddy\",\r\n  \"email\": \"divya@gmail.com\",\r\n  \"password\": \"123456\",\r\n  \"phone\": \"123456789\",\r\n  \"userStatus\": 0\r\n  \r\n}\r\n]"
+								},
+								"url": {
+									"raw": "{{base_url}}/user/createWithList",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"user",
+										"createWithList"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "GET",
+					"item": [
+						{
+							"name": "Get user by login",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "6d2ea81e-b7ed-41ac-90a4-21495ef14fac",
+										"exec": [
+											"pm.test(\"Checking login success status code\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Validating token\", function(){",
+											"    let jsonData=pm.response.json();",
+											"    if(jsonData.logged)",
+											"    {",
+											"        console.log(jsonData);",
+											"        pm.environment.set('Token',jsonData.logged);",
+											"        console.log(pm.environment.get('Token'));",
+											"",
+											"    }",
+											"",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/user/login?username=MaryDivya&password=123456",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"user",
+										"login"
+									],
+									"query": [
+										{
+											"key": "username",
+											"value": "MaryDivya"
+										},
+										{
+											"key": "password",
+											"value": "123456"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get user by username",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "b5103068-c1e8-4f76-8328-11c92d1e7f10",
+										"exec": [
+											"pm.test(\"Checking success status code\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"pm.test(\"Checking response contain username as Marydivya\", function () {",
+											"    pm.expect(pm.response.json().username).to.include(\"MaryDivya\");",
+											"});",
+											"",
+											"pm.test(\"Checking response contain is is equl to 1 \", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.id).to.eql(412);",
+											"});",
+											"",
+											"pm.test(\"Checking response contain gmail\", function () {",
+											"    pm.expect(pm.response.json().email).to.include(\"divya@gmail.com\");",
+											"});",
+											"",
+											"pm.test(\"Checking response contain phone \", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.phone).to.eql(\"123456789\");",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/user/MaryDivya",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"user",
+										"MaryDivya"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "User Logout",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "763914e9-612d-4749-8bff-0eebfb7a0f40",
+										"exec": [
+											"pm.test(\"User logged out successfuly\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/user/logout",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"user",
+										"logout"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "PUT",
+					"item": [
+						{
+							"name": "Update Username",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"id\": 412,\r\n  \"username\": \"MaryDivyaReddy\",\r\n  \"firstName\": \"MaryDivya\",\r\n  \"lastName\": \"Beereddy\",\r\n  \"email\": \"divya@gmail.com\",\r\n  \"password\": \"123456\",\r\n  \"phone\": \"123456789\",\r\n  \"userStatus\": 0\r\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/user/{username}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"user",
+										"{username}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get updated username",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "44cf578a-c838-4b4f-be29-98c6f60b5c26",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"pm.test(\"Body matches string\", function () {",
+											"    pm.expect(pm.response.json().username).to.include(\"MaryDivyaReddy\");",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/user/MaryDivyaReddy",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"user",
+										"MaryDivyaReddy"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "DELETE",
+					"item": [
+						{
+							"name": "Delete user",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "0cb773ed-ded4-402b-9433-d5f71c54cd7f",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/user/MaryDivyaReddy",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"user",
+										"MaryDivyaReddy"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{Token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "b2d7ed4a-d5a9-44c7-ac7f-da0a27f8572c",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "f9ce164f-0617-413b-ac67-62d548aead45",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "45d1ece3-bb3d-4c20-95c7-df156428c713",
+			"key": "idCollection",
+			"value": "234",
+			"type": "string"
+		}
+	]
+}
